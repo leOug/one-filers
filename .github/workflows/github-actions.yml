@@ -2,7 +2,7 @@ name: Lint
 run-name: ${{ github.actor }} is running tests 🚀
 on:
   push:
-    branches: [master]
+    branches: [main]
 jobs:
   tflint:
     runs-on: ubuntu-latest
