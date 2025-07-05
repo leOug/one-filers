@@ -24,13 +24,13 @@ variable "aws_region" {
   default = "eu-north-1"
 }
 
-resource "random_uuid" "very-important-uuid" {
-}
-
 variable "very-important-prefixes" {
   description = "A list of prefixes that will be created in the very important bucket"
   type = list(string)
   default = ["configs","important-configs"]
+}
+
+resource "random_uuid" "very-important-uuid" {
 }
 
 resource "aws_s3_bucket" "very-important-s3-bucket" {
