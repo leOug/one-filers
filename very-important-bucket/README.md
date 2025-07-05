@@ -9,6 +9,10 @@ retain the history of the config files and also it is private.
 The bucket is created using a random UUID in is name in order to avoid accidental requests
 if the name somehow matches someone else's bucket.
 
+I use aws cli v2 in oder to log in with the SSO before running any terraform commands.
+After the login, I follow the on-screen instructions and export the given environment variables
+to the running terminal. After that, terraform has access to my AWS credentials.
+
 In a normal terraform scenario this file would look something like this:
 
 ```text
