@@ -25,4 +25,7 @@ The **initial admin password** is usually located under:
 
 **until the first login**, during which you are prompted to change it.
 
+#### Plain text password
 
+In the ```nexus.tf``` file, the password for Nexus is in plain text for reference. This should be treated as a secret
+and stored accordingly but this is just a proof of concept so in this case, it is irrelevant.
