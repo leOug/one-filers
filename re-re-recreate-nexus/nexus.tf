@@ -22,7 +22,7 @@ provider "nexus" {
 variable "nexus_url" {
   description = "The url that nexus is accessible"
   type = string
-  default = "https://nexus.my.doma.in"
+  default = "https://nexus.doma.in"
 }
 
 variable "nexus_admin_password" {
@@ -167,4 +167,14 @@ output "docker-proxy-dockerhub-url" {
 
 output "docker-group-url" {
   value = "${var.nexus_url}/repository/${nexus_repository_docker_group.docker-group.id}"
+}
+
+resource "nexus_security_user" "extra-admin" {
+  userid    = "extra-admin"
+  firstname = "Extra"
+  lastname  = "Admin"
+  email     = "extra-admin@example.com"
+  password  = "admin123"
+  roles     = ["nx-admin"]
+  status    = "active"
 }
