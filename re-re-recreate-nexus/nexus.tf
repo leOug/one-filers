@@ -31,6 +31,11 @@ variable "nexus_admin_password" {
   default = "83f43c14-4c82-46f0-a5e4-72bf5ee1e6f2"
 }
 
+resource "nexus_security_anonymous" "system" {
+  enabled = false
+  user_id = "anonymous"
+}
+
 resource "nexus_blobstore_file" "docker-internal" {
   name = "docker-internal"
   path = "/nexus-data/docker-internal"
@@ -154,4 +159,12 @@ resource "nexus_repository_docker_group" "docker-group" {
 
 output "docker-hosted-internal-url" {
   value = "${var.nexus_url}/repository/${nexus_repository_docker_hosted.internal.id}"
+}
+
+output "docker-proxy-dockerhub-url" {
+  value = "${var.nexus_url}/repository/${nexus_repository_docker_proxy.dockerhub.id}"
+}
+
+output "docker-group-url" {
+  value = "${var.nexus_url}/repository/${nexus_repository_docker_group.docker-group.id}"
 }
