@@ -41,7 +41,7 @@ resource "nexus_blobstore_file" "docker-internal" {
   path = "/nexus-data/docker-internal"
 
   soft_quota {
-    limit = 1024000000
+    limit = 32212254720
     type  = "spaceRemainingQuota"
   }
 }
@@ -51,7 +51,7 @@ resource "nexus_blobstore_file" "dockerhub" {
   path = "/nexus-data/dockerhub"
 
   soft_quota {
-    limit = 1024000000
+    limit = 32212254720
     type  = "spaceRemainingQuota"
   }
 }
@@ -158,15 +158,15 @@ resource "nexus_repository_docker_group" "docker-group" {
 }
 
 output "docker-hosted-internal-url" {
-  value = "${var.nexus_url}/repository/${nexus_repository_docker_hosted.internal.id}"
+  value = "${var.nexus_url}/repository/${nexus_repository_docker_hosted.internal.id}/"
 }
 
 output "docker-proxy-dockerhub-url" {
-  value = "${var.nexus_url}/repository/${nexus_repository_docker_proxy.dockerhub.id}"
+  value = "${var.nexus_url}/repository/${nexus_repository_docker_proxy.dockerhub.id}/"
 }
 
 output "docker-group-url" {
-  value = "${var.nexus_url}/repository/${nexus_repository_docker_group.docker-group.id}"
+  value = "${var.nexus_url}/repository/${nexus_repository_docker_group.docker-group.id}/"
 }
 
 resource "nexus_security_user" "extra-admin" {
@@ -178,3 +178,4 @@ resource "nexus_security_user" "extra-admin" {
   roles     = ["nx-admin"]
   status    = "active"
 }
+
