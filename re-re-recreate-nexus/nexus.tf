@@ -179,3 +179,20 @@ resource "nexus_security_user" "extra-admin" {
   status    = "active"
 }
 
+resource "nexus_security_role" "docker-group-read" {
+  description = "Users with this role can read (pull) from the docker registries that are in the docker group"
+  name        = "${nexus_repository_docker_group.docker-group.name}-read"
+  privileges = [
+    "nx-repository-view-docker-${nexus_repository_docker_group.docker-group.name}-*",
+  ]
+  roleid = "${nexus_repository_docker_group.docker-group.name}-read"
+}
+
+resource "nexus_security_role" "docker-internal-write" {
+  description = "Users with this role can write (push) to the hosted docker registries"
+  name        = "docker-${nexus_repository_docker_hosted.internal.name}-write"
+  privileges = [
+    "nx-repository-view-docker-${nexus_repository_docker_hosted.internal.name}-*",
+  ]
+  roleid = "docker-${nexus_repository_docker_hosted.internal.name}-write"
+}
