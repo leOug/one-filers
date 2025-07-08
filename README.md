@@ -1,5 +1,5 @@
 # one-filers
-Like cool one liners, but with files, but for terraform
+Like cool one-liners, but with files, but for terraform
 
 I always have difficulties when I begin writing READMEs so I asked mister G. Pitee to write
 a beginning for me. The code and the rest are my own.
@@ -16,7 +16,7 @@ Yeehaw and happy provisioning! 🌵🐎
 
 What?
 -----
-As perfectly summarised above, this repository contains terraform modules for AWS resources.
+As perfectly summarised above, this repository contains terraform modules for ~~AWS~~ "AWS and more" resources.
 Instead of using multiple files for each module, I plan to use one file that encompasses everything
 for each use case. It is rather unconventional, but it helps me to organize based on the usage and not having to 
 constantly look back and forth between files.
@@ -24,3 +24,5 @@ constantly look back and forth between files.
 This is not practical or sane for large deployments, but it is practical when i want to experiment.
 
 [very-important-bucket](very-important-bucket/README.md)
+
+[re-re-recreate-nexus](re-re-recreate-nexus/README.md)
