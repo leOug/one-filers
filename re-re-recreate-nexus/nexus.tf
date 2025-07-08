@@ -213,3 +213,29 @@ resource "nexus_security_role" "docker-internal-write" {
   ]
   roleid = "docker-${nexus_repository_docker_hosted.internal.name}-write"
 }
+
+resource "nexus_security_user" "extra-admin" {
+  userid    = "extra-admin"
+  firstname = "Extra"
+  lastname  = "Admin"
+  email     = "extra-admin@example.com"
+  password  = "admin123"
+  roles     = ["nx-admin"]
+  status    = "active"
+}
+
+
+resource "nexus_security_user" "ci-bot" {
+  userid    = "ci-bot"
+  firstname = "Continuous Integration"
+  lastname  = "Bot"
+  email     = "ci-bot@example.com"
+  password  = "continuous123"
+  roles     = [
+    nexus_security_role.docker-group-read.roleid,
+    nexus_security_role.docker-internal-read.roleid,
+    nexus_security_role.docker-internal-write.roleid
+  ]
+  status    = "active"
+}
+
