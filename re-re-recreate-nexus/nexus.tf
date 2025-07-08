@@ -147,18 +147,6 @@ resource "nexus_repository_docker_group" "docker-group" {
   }
 }
 
-output "docker-hosted-internal-url" {
-  value = "${var.nexus_url}/repository/${nexus_repository_docker_hosted.internal.id}/"
-}
-
-output "docker-proxy-dockerhub-url" {
-  value = "${var.nexus_url}/repository/${nexus_repository_docker_proxy.dockerhub.id}/"
-}
-
-output "docker-group-url" {
-  value = "${var.nexus_url}/repository/${nexus_repository_docker_group.docker-group.id}/"
-}
-
 resource "nexus_security_realms" "active-realms" {
   active = [
     "NexusAuthenticatingRealm",
