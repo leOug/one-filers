@@ -252,6 +252,7 @@ resource "nexus_security_user" "ci-bot" {
   email     = "ci-bot@example.com"
   password  = "continuous123"
   roles     = [
+    nexus_security_role.normal-user.roleid,
     nexus_security_role.docker-group-read.roleid,
     nexus_security_role.docker-internal-read.roleid,
     nexus_security_role.docker-internal-write.roleid
