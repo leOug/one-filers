@@ -1,6 +1,16 @@
 A Very Important Bucket
 ---
 
+The purpose of this is to experiment with the automatic provisioning of a Sonatype Nexus Installation. 
+I want to use Nexus personally as my homelab's registry for Docker, Python and Raw storage along with Gitlab CE for 
+building Docker images.
+
+I have created various users inside gitlab that simulate teams of people (Developers, DevOps, QA), so I wanted a fast
+way to create the equivalent users in Nexus and give them various permission levels.
+
+I have started with an extra admin and a generic user that can push/pull docker images and I am working my way towards
+implementing a full roster of imaginary people.
+
 #### Prerequisites
 
 This was executed against a **Sonatype Nexus Repository Community Edition (CE) v3.81.1-01**.
