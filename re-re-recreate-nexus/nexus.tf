@@ -4,10 +4,6 @@ terraform{
       source = "datadrivers/nexus"
       version = "2.6.0"
     }
-    random = {
-      source = "hashicorp/random"
-      version = "3.7.2"
-    }
   }
 }
 
