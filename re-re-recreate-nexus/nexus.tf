@@ -169,6 +169,13 @@ output "docker-group-url" {
   value = "${var.nexus_url}/repository/${nexus_repository_docker_group.docker-group.id}/"
 }
 
+resource "nexus_security_realms" "active-realms" {
+  active = [
+    "NexusAuthenticatingRealm",
+    "DockerToken",
+  ]
+}
+
 resource "nexus_security_user" "extra-admin" {
   userid    = "extra-admin"
   firstname = "Extra"
