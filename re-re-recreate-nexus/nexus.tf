@@ -144,6 +144,7 @@ resource "nexus_repository_docker_group" "docker-group" {
 
   group {
     member_names = [
+      nexus_repository_docker_proxy.dockerhub.name,
       nexus_repository_docker_hosted.internal.name,
       nexus_repository_docker_proxy.dockerhub.name
     ]
