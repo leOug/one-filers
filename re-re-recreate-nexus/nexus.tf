@@ -62,6 +62,15 @@ resource "nexus_blobstore_file" "docker-group" {
   }
 }
 
+resource "nexus_blobstore_file" "raw-storage" {
+  name = "raw-storage"
+  path = "/nexus-data/raw-storage"
+
+  soft_quota {
+    limit = 1024000000
+    type  = "spaceRemainingQuota"
+  }
+}
 
 resource "nexus_repository_docker_hosted" "internal" {
   depends_on = [nexus_blobstore_file.docker-internal]
@@ -143,6 +152,18 @@ resource "nexus_repository_docker_group" "docker-group" {
   }
 }
 
+resource "nexus_repository_raw_hosted" "internal" {
+  depends_on = [nexus_blobstore_file.raw-storage]
+  name   = "raw-internal"
+  online = true
+
+  storage {
+    blob_store_name                = nexus_blobstore_file.raw-storage.name
+    strict_content_type_validation = false
+    write_policy                   = "ALLOW"
+  }
+}
+
 resource "nexus_security_realms" "active-realms" {
   active = [
     "NexusAuthenticatingRealm",
@@ -190,6 +211,36 @@ resource "nexus_security_role" "docker-internal-delete" {
   roleid = "docker-${nexus_repository_docker_hosted.internal.name}-delete"
 }
 
+resource "nexus_security_role" "raw-internal-read" {
+  depends_on = [nexus_repository_raw_hosted.internal]
+  description = "Users with this role can read the hosted raw internal registry"
+  name        = "raw-${nexus_repository_raw_hosted.internal.name}-read"
+  privileges = [
+    "nx-repository-view-raw-${nexus_repository_raw_hosted.internal.name}-read",
+  ]
+  roleid = "raw-${nexus_repository_raw_hosted.internal.name}-read"
+}
+
+resource "nexus_security_role" "raw-internal-write" {
+  depends_on = [nexus_repository_raw_hosted.internal]
+  description = "Users with this role can write to the hosted raw internal registry"
+  name        = "docker-${nexus_repository_raw_hosted.internal.name}-write"
+  privileges = [
+    "nx-repository-view-raw-${nexus_repository_raw_hosted.internal.name}-edit",
+  ]
+  roleid = "raw-${nexus_repository_raw_hosted.internal.name}-write"
+}
+
+resource "nexus_security_role" "raw-internal-delete" {
+  depends_on = [nexus_repository_raw_hosted.internal]
+  description = "Users with this role can delete from the hosted raw internal registry"
+  name        = "raw-${nexus_repository_raw_hosted.internal.name}-delete"
+  privileges = [
+    "nx-repository-view-raw-${nexus_repository_raw_hosted.internal.name}-delete",
+  ]
+  roleid = "raw-${nexus_repository_raw_hosted.internal.name}-delete"
+}
+
 resource "nexus_security_role" "normal-user" {
   description = "A generic User role that has basic privileges for all repositories"
   name   = "normal-user"
@@ -211,13 +262,15 @@ resource "nexus_security_user" "extra-admin" {
   status    = "active"
 }
 
-
 resource "nexus_security_user" "ci-bot" {
   depends_on = [
     nexus_security_role.normal-user,
-    nexus_blobstore_file.docker-group,
-    nexus_blobstore_file.docker-internal,
-    nexus_blobstore_file.dockerhub
+    nexus_security_role.docker-group-read,
+    nexus_security_role.docker-internal-read,
+    nexus_security_role.docker-internal-write,
+    nexus_security_role.raw-internal-read,
+    nexus_security_role.raw-internal-write,
+    nexus_security_role.raw-internal-delete,
   ]
   userid    = "ci-bot"
   firstname = "Continuous Integration"
@@ -228,7 +281,10 @@ resource "nexus_security_user" "ci-bot" {
     nexus_security_role.normal-user.roleid,
     nexus_security_role.docker-group-read.roleid,
     nexus_security_role.docker-internal-read.roleid,
-    nexus_security_role.docker-internal-write.roleid
+    nexus_security_role.docker-internal-write.roleid,
+    nexus_security_role.raw-internal-read.roleid,
+    nexus_security_role.raw-internal-write.roleid,
+    nexus_security_role.raw-internal-delete.roleid,
   ]
   status    = "active"
 }
