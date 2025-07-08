@@ -214,6 +214,26 @@ resource "nexus_security_role" "docker-internal-write" {
   roleid = "docker-${nexus_repository_docker_hosted.internal.name}-write"
 }
 
+resource "nexus_security_role" "docker-internal-delete" {
+  description = "Users with this role can delete from the hosted docker registries"
+  name        = "docker-${nexus_repository_docker_hosted.internal.name}-delete"
+  privileges = [
+    "nx-repository-view-docker-${nexus_repository_docker_hosted.internal.name}-delete",
+  ]
+  roleid = "docker-${nexus_repository_docker_hosted.internal.name}-delete"
+}
+
+resource "nexus_security_role" "normal-user" {
+  description = "A generic User role that has basic privileges for all repositories"
+  name   = "normal-user"
+  privileges = [
+    "nx-repository-view-*-*-browse",
+    "nx-healthcheck-read",
+    "nx-search-read",
+  ]
+  roleid = "normal-user"
+}
+
 resource "nexus_security_user" "extra-admin" {
   userid    = "extra-admin"
   firstname = "Extra"
