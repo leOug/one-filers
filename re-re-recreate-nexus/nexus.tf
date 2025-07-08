@@ -174,16 +174,6 @@ resource "nexus_security_realms" "active-realms" {
   ]
 }
 
-resource "nexus_security_user" "extra-admin" {
-  userid    = "extra-admin"
-  firstname = "Extra"
-  lastname  = "Admin"
-  email     = "extra-admin@example.com"
-  password  = "admin123"
-  roles     = ["nx-admin"]
-  status    = "active"
-}
-
 resource "nexus_security_role" "docker-group-read" {
   description = "Users with this role can read (pull) from the docker registries that are in the docker group"
   name        = "${nexus_repository_docker_group.docker-group.name}-read"
