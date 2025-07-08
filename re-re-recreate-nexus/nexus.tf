@@ -66,17 +66,6 @@ resource "nexus_blobstore_file" "docker-group" {
   }
 }
 
-data "nexus_blobstore_file" "docker-internal" {
-  name = nexus_blobstore_file.docker-internal.name
-}
-
-data "nexus_blobstore_file" "dockerhub" {
-  name = nexus_blobstore_file.dockerhub.name
-}
-
-data "nexus_blobstore_file" "docker-group" {
-  name = nexus_blobstore_file.docker-group.name
-}
 
 resource "nexus_repository_docker_hosted" "internal" {
   name = "internal"
@@ -89,7 +78,7 @@ resource "nexus_repository_docker_hosted" "internal" {
   }
 
   storage {
-    blob_store_name                = data.nexus_blobstore_file.docker-internal.name
+    blob_store_name                = nexus_blobstore_file.docker-internal.name
     strict_content_type_validation = true
     write_policy                   = "ALLOW"
   }
@@ -109,7 +98,7 @@ resource "nexus_repository_docker_proxy" "dockerhub" {
   }
 
   storage {
-    blob_store_name                = data.nexus_blobstore_file.dockerhub.name
+    blob_store_name                = nexus_blobstore_file.dockerhub.name
     strict_content_type_validation = true
   }
 
