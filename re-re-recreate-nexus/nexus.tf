@@ -100,7 +100,7 @@ resource "nexus_repository_docker_proxy" "dockerhub" {
 
   docker {
     force_basic_auth = false
-    http_port        = 8082
+    http_port        = 8083
     v1_enabled       = false
   }
 
@@ -137,16 +137,13 @@ resource "nexus_repository_docker_group" "docker-group" {
   docker {
     force_basic_auth = false
     http_port        = 8084
-    https_port       = 8484
     v1_enabled       = false
-    subdomain        = "docker-group"
   }
 
   group {
     member_names = [
       nexus_repository_docker_proxy.dockerhub.name,
       nexus_repository_docker_hosted.internal.name,
-      nexus_repository_docker_proxy.dockerhub.name
     ]
     # Removed because this is NOT a pro nexus installation
     # writable_member = nexus_repository_docker_hosted.internal.name
