@@ -204,3 +204,12 @@ resource "nexus_security_role" "docker-internal-write" {
   ]
   roleid = "docker-${nexus_repository_docker_hosted.internal.name}-write"
 }
+
+resource "nexus_security_role" "docker-internal-write" {
+  description = "Users with this role can write (push) to the hosted docker registries"
+  name        = "docker-${nexus_repository_docker_hosted.internal.name}-write"
+  privileges = [
+    "nx-repository-view-docker-${nexus_repository_docker_hosted.internal.name}-edit",
+  ]
+  roleid = "docker-${nexus_repository_docker_hosted.internal.name}-write"
+}
