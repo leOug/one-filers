@@ -116,5 +116,6 @@ The **initial admin password** is usually located under:
 
 ### Plain text passwords
 
-In the ```nexus.tf``` file, the **password for Nexus is in plain text for reference**. This should be treated as a secret
-and stored accordingly but this is just a proof of concept so in this case, it is irrelevant.
+In the ```nexus.tf``` file, the **passwords for Nexus and for the created users are in plain text for reference**. 
+These should be treated as secrets and stored accordingly but this is just a proof of concept so in this case, 
+it is irrelevant.
