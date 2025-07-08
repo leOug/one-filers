@@ -200,9 +200,9 @@ resource "nexus_security_role" "docker-internal-read" {
   description = "Users with this role can read the hosted docker registries"
   name        = "docker-${nexus_repository_docker_hosted.internal.name}-read"
   privileges = [
-    "nx-repository-view-docker-${nexus_repository_docker_hosted.internal.name}-*",
+    "nx-repository-view-docker-${nexus_repository_docker_hosted.internal.name}-read",
   ]
-  roleid = "docker-${nexus_repository_docker_hosted.internal.name}-write"
+  roleid = "docker-${nexus_repository_docker_hosted.internal.name}-read"
 }
 
 resource "nexus_security_role" "docker-internal-write" {
