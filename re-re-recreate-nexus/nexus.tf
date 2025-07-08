@@ -68,6 +68,7 @@ resource "nexus_blobstore_file" "docker-group" {
 
 
 resource "nexus_repository_docker_hosted" "internal" {
+  depends_on = [nexus_blobstore_file.docker-internal]
   name = "internal"
 
   docker {
@@ -85,6 +86,7 @@ resource "nexus_repository_docker_hosted" "internal" {
 }
 
 resource "nexus_repository_docker_proxy" "dockerhub" {
+  depends_on = [nexus_blobstore_file.dockerhub]
   name = "dockerhub"
 
   docker {
@@ -120,6 +122,7 @@ resource "nexus_repository_docker_proxy" "dockerhub" {
 }
 
 resource "nexus_repository_docker_group" "docker-group" {
+  depends_on = [nexus_blobstore_file.docker-group]
   name   = "docker-group"
   online = true
 
@@ -139,7 +142,7 @@ resource "nexus_repository_docker_group" "docker-group" {
   }
 
   storage {
-    blob_store_name                = data.nexus_blobstore_file.docker-group.name
+    blob_store_name                = nexus_blobstore_file.docker-group.name
     strict_content_type_validation = true
   }
 }
@@ -164,6 +167,7 @@ resource "nexus_security_realms" "active-realms" {
 }
 
 resource "nexus_security_role" "docker-group-read" {
+  depends_on = [nexus_repository_docker_group.docker-group]
   description = "Users with this role can read (pull) from the docker registries that are in the docker group"
   name        = "${nexus_repository_docker_group.docker-group.name}-read"
   privileges = [
@@ -173,6 +177,7 @@ resource "nexus_security_role" "docker-group-read" {
 }
 
 resource "nexus_security_role" "docker-internal-read" {
+    depends_on = [nexus_repository_docker_hosted.internal]
   description = "Users with this role can read the hosted docker registries"
   name        = "docker-${nexus_repository_docker_hosted.internal.name}-read"
   privileges = [
@@ -182,6 +187,7 @@ resource "nexus_security_role" "docker-internal-read" {
 }
 
 resource "nexus_security_role" "docker-internal-write" {
+  depends_on = [nexus_repository_docker_hosted.internal]
   description = "Users with this role can write (push) to the hosted docker registries"
   name        = "docker-${nexus_repository_docker_hosted.internal.name}-write"
   privileges = [
@@ -191,6 +197,7 @@ resource "nexus_security_role" "docker-internal-write" {
 }
 
 resource "nexus_security_role" "docker-internal-delete" {
+  depends_on = [nexus_repository_docker_hosted.internal]
   description = "Users with this role can delete from the hosted docker registries"
   name        = "docker-${nexus_repository_docker_hosted.internal.name}-delete"
   privileges = [
@@ -222,6 +229,12 @@ resource "nexus_security_user" "extra-admin" {
 
 
 resource "nexus_security_user" "ci-bot" {
+  depends_on = [
+    nexus_security_role.normal-user,
+    nexus_blobstore_file.docker-group,
+    nexus_blobstore_file.docker-internal,
+    nexus_blobstore_file.dockerhub
+  ]
   userid    = "ci-bot"
   firstname = "Continuous Integration"
   lastname  = "Bot"
