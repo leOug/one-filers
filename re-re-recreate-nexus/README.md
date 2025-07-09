@@ -1,4 +1,4 @@
-A Very Important Bucket
+Re-create Nexus ad nauseam
 ---
 
 The purpose of this is to experiment with the automatic provisioning of a Sonatype Nexus Installation. 
